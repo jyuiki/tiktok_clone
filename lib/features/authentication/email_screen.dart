@@ -81,7 +81,7 @@ class _EmailScreenState extends State<EmailScreen> {
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                onEditingComplete: () => _onSubmit(),
+                onEditingComplete: _onSubmit,
                 autocorrect: false,
                 decoration: InputDecoration(
                   hintText: "Email",
@@ -101,7 +101,7 @@ class _EmailScreenState extends State<EmailScreen> {
               ),
               Gaps.v16,
               GestureDetector(
-                onTap: () => _onSubmit(),
+                onTap: _onSubmit,
                 child: FormButton(
                     disabled: _email.isEmpty || _isEmailValid() != null),
               ),
