@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -28,6 +30,19 @@ class _VideoPostState extends State<VideoPost>
   bool _isPaused = false;
   final _animationDuration = const Duration(milliseconds: 200);
 
+  final _tags = [
+    "#cute",
+    "#cuteGirl",
+    "#baby",
+    "#adorable",
+    "#lovely",
+    "#funny",
+    "#dance",
+    "#singing",
+    "#cute",
+  ];
+  bool _isSeeMore = false;
+
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
       if (_videoPlayerController.value.duration ==
@@ -39,6 +54,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
+    await _videoPlayerController.setLooping(true);
     setState(() {});
     _videoPlayerController.addListener(_onVideoChange);
   }
@@ -84,8 +100,15 @@ class _VideoPostState extends State<VideoPost>
     });
   }
 
+  void _onTapTags() {
+    _isSeeMore = !_isSeeMore;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double tagsMaxWidth = MediaQuery.of(context).size.width - 100;
+
     return VisibilityDetector(
       key: Key("${widget.index}"),
       onVisibilityChanged: _onVisibilityChanged,
@@ -125,6 +148,97 @@ class _VideoPostState extends State<VideoPost>
                   ),
                 ),
               ),
+            ),
+          ),
+          Positioned(
+            bottom: 20,
+            left: 10,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "@Derek",
+                  style: TextStyle(
+                    fontSize: Sizes.size20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Gaps.v10,
+                const Text(
+                  "Very Cute Girl! Dayeon!!",
+                  style: TextStyle(
+                    fontSize: Sizes.size16,
+                    color: Colors.white,
+                  ),
+                ),
+                Gaps.v10,
+                SizedBox(
+                  width: tagsMaxWidth,
+                  child: GestureDetector(
+                    onTap: _onTapTags,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            _tags.join(" "),
+                            style: const TextStyle(
+                              fontSize: Sizes.size16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            maxLines: _isSeeMore ? 3 : 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Visibility(
+                          visible: !_isSeeMore,
+                          child: const Text(
+                            "See more",
+                            style: TextStyle(
+                              fontSize: Sizes.size16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Positioned(
+            bottom: 20,
+            right: 10,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  foregroundImage: NetworkImage(
+                      "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png"),
+                  child: Text("Derek"),
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidHeart,
+                  text: "2.9M",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.solidComment,
+                  text: "33K",
+                ),
+                Gaps.v24,
+                VideoButton(
+                  icon: FontAwesomeIcons.share,
+                  text: "Share",
+                ),
+              ],
             ),
           ),
         ],
