@@ -87,6 +87,10 @@ class _VideoPostState extends State<VideoPost>
         !_videoPlayerController.value.isPlaying) {
       _videoPlayerController.play();
     }
+
+    if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
+      _onTogglePause();
+    }
   }
 
   void _onTogglePause() {
@@ -127,7 +131,11 @@ class _VideoPostState extends State<VideoPost>
 
     return VisibilityDetector(
       key: Key("${widget.index}"),
-      onVisibilityChanged: _onVisibilityChanged,
+      onVisibilityChanged: (info) {
+        if (mounted) {
+          _onVisibilityChanged(info);
+        }
+      },
       child: Stack(
         children: [
           Positioned.fill(

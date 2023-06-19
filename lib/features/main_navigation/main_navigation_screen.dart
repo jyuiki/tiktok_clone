@@ -48,15 +48,15 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ),
           Offstage(
             offstage: _selectedIndex != 1,
-            child: const VideoTimelineScreen(),
+            child: Container(),
           ),
           Offstage(
             offstage: _selectedIndex != 3,
-            child: const VideoTimelineScreen(),
+            child: Container(),
           ),
           Offstage(
             offstage: _selectedIndex != 4,
-            child: const VideoTimelineScreen(),
+            child: Container(),
           ),
         ],
       ),
