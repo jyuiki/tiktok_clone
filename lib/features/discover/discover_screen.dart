@@ -120,79 +120,7 @@ class _DiscoverScreenState extends State<DiscoverScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          GridView.builder(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            itemCount: 20,
-            padding: const EdgeInsets.all(Sizes.size6),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: Sizes.size10,
-              mainAxisSpacing: Sizes.size10,
-              childAspectRatio: 9 / 20,
-            ),
-            itemBuilder: (context, index) => Column(
-              children: [
-                Container(
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Sizes.size4),
-                  ),
-                  child: AspectRatio(
-                    aspectRatio: 9 / 16,
-                    child: FadeInImage.assetNetwork(
-                        fit: BoxFit.cover,
-                        placeholder: "assets/images/dayeon.jpeg",
-                        image:
-                            "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"),
-                  ),
-                ),
-                Gaps.v10,
-                const Text(
-                  "This is Very long caption for my tiktok blabalalbalablalblablabalalbalablalblablabalalbalablalbla",
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: Sizes.size16 + Sizes.size2,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Gaps.v5,
-                DefaultTextStyle(
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  child: Row(
-                    children: [
-                      const CircleAvatar(
-                        radius: 12,
-                        backgroundImage: NetworkImage(
-                            "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png"),
-                      ),
-                      Gaps.h8,
-                      const Expanded(
-                        child: Text(
-                          "https://github.githubassets.com/images/modules/profile/achi",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Gaps.h8,
-                      FaIcon(
-                        FontAwesomeIcons.heart,
-                        size: Sizes.size16,
-                        color: Colors.grey.shade600,
-                      ),
-                      Gaps.h2,
-                      const Text(
-                        "2.5M",
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          const DiscoverGridview(),
           for (var tab in tabs.skip(1))
             Center(
               child: Text(
@@ -200,6 +128,104 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                 style: const TextStyle(fontSize: 28),
               ),
             )
+        ],
+      ),
+    );
+  }
+}
+
+class DiscoverGridview extends StatefulWidget {
+  const DiscoverGridview({
+    super.key,
+  });
+
+  @override
+  State<DiscoverGridview> createState() => _DiscoverGridviewState();
+}
+
+///
+/// TabBarView가 tab이 이동 할때 마다 새로 그리는걸 방지.
+/// 1. with AutomaticKeepAliveClientMixin
+/// 2. build 메서드에  super.build(context) 추가
+/// 3. bool get wantKeepAlive => true; 추가
+class _DiscoverGridviewState extends State<DiscoverGridview>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return GridView.builder(
+      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+      itemCount: 20,
+      padding: const EdgeInsets.all(Sizes.size6),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: Sizes.size10,
+        mainAxisSpacing: Sizes.size10,
+        childAspectRatio: 9 / 20,
+      ),
+      itemBuilder: (context, index) => Column(
+        children: [
+          Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Sizes.size4),
+            ),
+            child: AspectRatio(
+              aspectRatio: 9 / 16,
+              child: FadeInImage.assetNetwork(
+                  fit: BoxFit.cover,
+                  placeholder: "assets/images/dayeon.jpeg",
+                  image:
+                      "https://images.unsplash.com/photo-1673844969019-c99b0c933e90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"),
+            ),
+          ),
+          Gaps.v10,
+          const Text(
+            "This is Very long caption for my tiktok blabalalbalablalblablabalalbalablalblablabalalbalablalbla",
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: Sizes.size16 + Sizes.size2,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Gaps.v5,
+          DefaultTextStyle(
+            style: TextStyle(
+              color: Colors.grey.shade600,
+              fontWeight: FontWeight.w600,
+            ),
+            child: Row(
+              children: [
+                const CircleAvatar(
+                  radius: 12,
+                  backgroundImage: NetworkImage(
+                      "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png"),
+                ),
+                Gaps.h8,
+                const Expanded(
+                  child: Text(
+                    "https://github.githubassets.com/images/modules/profile/achi",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Gaps.h8,
+                FaIcon(
+                  FontAwesomeIcons.heart,
+                  size: Sizes.size16,
+                  color: Colors.grey.shade600,
+                ),
+                Gaps.h2,
+                const Text(
+                  "2.5M",
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
