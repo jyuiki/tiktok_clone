@@ -41,8 +41,10 @@ class _DiscoverScreenState extends State<DiscoverScreen>
       length: tabs.length,
       vsync: this,
     )..addListener(() {
-        logger.i("tab changed index = ${tabs[_tabController.index]}");
-        FocusScope.of(context).unfocus();
+        if (_tabController.indexIsChanging) {
+          logger.i("tab changed index = ${tabs[_tabController.index]}");
+          FocusScope.of(context).unfocus();
+        }
       });
   }
 
