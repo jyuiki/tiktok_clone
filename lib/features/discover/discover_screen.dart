@@ -34,23 +34,24 @@ class _DiscoverScreenState extends State<DiscoverScreen>
     logger.d(value);
   }
 
+  void _tabListener() {
+    logger.i("tab changed index = ${tabs[_tabController.index]}");
+    FocusScope.of(context).unfocus();
+  }
+
   @override
   void initState() {
     super.initState();
     _tabController = TabController(
       length: tabs.length,
       vsync: this,
-    )..addListener(() {
-        if (_tabController.indexIsChanging) {
-          logger.i("tab changed index = ${tabs[_tabController.index]}");
-          FocusScope.of(context).unfocus();
-        }
-      });
+    )..addListener(_tabListener);
   }
 
   @override
   void dispose() {
     _textEditingController.dispose();
+    _tabController.removeListener(_tabListener);
     _tabController.dispose();
     super.dispose();
   }
