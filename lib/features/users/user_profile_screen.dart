@@ -62,73 +62,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        const Text(
-                          "37",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Sizes.size18,
-                          ),
-                        ),
-                        Gaps.v3,
-                        Text(
-                          "Following",
-                          style: TextStyle(
-                            color: Colors.grey.shade500,
-                          ),
-                        ),
-                      ],
+                    _getAccountInfoWidget(
+                      counts: "37",
+                      type: "Following",
                     ),
-                    VerticalDivider(
-                      width: Sizes.size32,
-                      thickness: Sizes.size1,
-                      color: Colors.grey.shade400,
-                      indent: Sizes.size14,
-                      endIndent: Sizes.size14,
+                    _getVerticalDivider(),
+                    _getAccountInfoWidget(
+                      counts: "10.5M",
+                      type: "Followers",
                     ),
-                    Column(
-                      children: [
-                        const Text(
-                          "10.5M",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Sizes.size18,
-                          ),
-                        ),
-                        Gaps.v3,
-                        Text(
-                          "Followers",
-                          style: TextStyle(
-                            color: Colors.grey.shade500,
-                          ),
-                        ),
-                      ],
-                    ),
-                    VerticalDivider(
-                      width: Sizes.size32,
-                      thickness: Sizes.size1,
-                      color: Colors.grey.shade400,
-                      indent: Sizes.size14,
-                      endIndent: Sizes.size14,
-                    ),
-                    Column(
-                      children: [
-                        const Text(
-                          "149.3M",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: Sizes.size18,
-                          ),
-                        ),
-                        Gaps.v3,
-                        Text(
-                          "Likes",
-                          style: TextStyle(
-                            color: Colors.grey.shade500,
-                          ),
-                        ),
-                      ],
+                    _getVerticalDivider(),
+                    _getAccountInfoWidget(
+                      counts: "149.3M",
+                      type: "Likes",
                     ),
                   ],
                 ),
@@ -137,6 +83,40 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Column _getAccountInfoWidget({
+    required String counts,
+    required String type,
+  }) {
+    return Column(
+      children: [
+        Text(
+          counts,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: Sizes.size18,
+          ),
+        ),
+        Gaps.v3,
+        Text(
+          type,
+          style: TextStyle(
+            color: Colors.grey.shade500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  VerticalDivider _getVerticalDivider() {
+    return VerticalDivider(
+      width: Sizes.size32,
+      thickness: Sizes.size1,
+      color: Colors.grey.shade400,
+      indent: Sizes.size14,
+      endIndent: Sizes.size14,
     );
   }
 }
