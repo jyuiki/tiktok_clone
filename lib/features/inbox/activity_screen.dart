@@ -88,10 +88,11 @@ class _ActivityScreenState extends State<ActivityScreen>
     logger.d(_notifications);
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: GestureDetector(
           onTap: _onToggleAnimations,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               const Text("All activity"),
               Gaps.h2,
