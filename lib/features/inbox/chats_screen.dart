@@ -10,6 +10,20 @@ class ChatsScreen extends StatefulWidget {
 }
 
 class _ChatsScreenState extends State<ChatsScreen> {
+  final GlobalKey<AnimatedListState> _key = GlobalKey<AnimatedListState>();
+
+  final List<int> _items = [];
+
+  void _addItem() {
+    if (_key.currentState != null) {
+      _key.currentState!.insertItem(_items.length,
+          duration: const Duration(
+            milliseconds: 500,
+          ));
+      _items.add(_items.length);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,49 +34,53 @@ class _ChatsScreenState extends State<ChatsScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _addItem,
             icon: const FaIcon(
               FontAwesomeIcons.plus,
             ),
           ),
         ],
       ),
-      body: ListView(
+      body: AnimatedList(
+        key: _key,
         padding: const EdgeInsets.symmetric(
           vertical: Sizes.size10,
         ),
-        children: [
-          ListTile(
-            leading: const CircleAvatar(
-              radius: 30,
-              foregroundImage: NetworkImage(
-                  "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png"),
-              child: Text("derek"),
-            ),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const Text(
-                  "AntonioBM",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
+        itemBuilder: (context, index, animation) {
+          return SizeTransition(
+            sizeFactor: animation,
+            child: ListTile(
+              leading: const CircleAvatar(
+                radius: 30,
+                foregroundImage: NetworkImage(
+                    "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png"),
+                child: Text("derek"),
+              ),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    "$index",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                Text(
-                  "2:16 PM",
-                  style: TextStyle(
-                    color: Colors.grey.shade500,
-                    fontSize: Sizes.size12,
+                  Text(
+                    "2:16 PM",
+                    style: TextStyle(
+                      color: Colors.grey.shade500,
+                      fontSize: Sizes.size12,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
+              subtitle: const Text(
+                "Say hi to AntonioBM",
+              ),
             ),
-            subtitle: const Text(
-              "Say hi to AntonioBM",
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
