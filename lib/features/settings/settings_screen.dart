@@ -1,8 +1,23 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/main.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _notifications = false;
+
+  void _onNotificationsChanged(bool? newValue) {
+    if (newValue == null) return;
+    setState(() {
+      _notifications = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +27,35 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          Switch.adaptive(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+          ),
+          CupertinoSwitch(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+          ),
+          SwitchListTile.adaptive(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+            title: const Text("Enable notification"),
+            subtitle: const Text("Enable notification"),
+          ),
+          SwitchListTile(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+            title: const Text("Enable notification"),
+          ),
+          Checkbox(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+          ),
+          CheckboxListTile(
+            value: _notifications,
+            onChanged: _onNotificationsChanged,
+            title: const Text("Enable notification"),
+            activeColor: Colors.black,
+          ),
           ListTile(
             onTap: () async {
               final date = await showDatePicker(
