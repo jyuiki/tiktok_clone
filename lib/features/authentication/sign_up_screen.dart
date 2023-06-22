@@ -29,6 +29,7 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logger.i(Localizations.localeOf(context));
     return OrientationBuilder(
       builder: (context, orientation) {
         logger.i(orientation);
