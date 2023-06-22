@@ -65,34 +65,39 @@ class _DiscoverScreenState extends State<DiscoverScreen>
         elevation: 1,
         title: SizedBox(
           height: Sizes.size44,
-          child: TextField(
-            controller: _textEditingController,
-            onChanged: _onSearchChanged,
-            onSubmitted: _onSearchSubmitted,
-            textInputAction: TextInputAction.done,
-            decoration: InputDecoration(
-              hintText: "Search",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(Sizes.size4),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: Colors.grey.shade200,
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: Sizes.size20,
-              ),
-              prefixIcon: const Icon(
-                FontAwesomeIcons.magnifyingGlass,
-                opticalSize: 3,
-                color: Colors.black,
-                size: Sizes.size20,
-              ),
-              suffixIcon: GestureDetector(
-                onTap: () => _textEditingController.clear(),
-                child: Icon(
-                  FontAwesomeIcons.solidCircleXmark,
-                  color: Colors.grey.shade600,
-                  size: Sizes.size16 + Sizes.size2,
+          child: Container(
+            constraints: const BoxConstraints(
+              maxWidth: Breakpoints.sm,
+            ),
+            child: TextField(
+              controller: _textEditingController,
+              onChanged: _onSearchChanged,
+              onSubmitted: _onSearchSubmitted,
+              textInputAction: TextInputAction.done,
+              decoration: InputDecoration(
+                hintText: "Search",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(Sizes.size4),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: Colors.grey.shade200,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: Sizes.size20,
+                ),
+                prefixIcon: const Icon(
+                  FontAwesomeIcons.magnifyingGlass,
+                  opticalSize: 3,
+                  color: Colors.black,
+                  size: Sizes.size20,
+                ),
+                suffixIcon: GestureDetector(
+                  onTap: () => _textEditingController.clear(),
+                  child: Icon(
+                    FontAwesomeIcons.solidCircleXmark,
+                    color: Colors.grey.shade600,
+                    size: Sizes.size16 + Sizes.size2,
+                  ),
                 ),
               ),
             ),
