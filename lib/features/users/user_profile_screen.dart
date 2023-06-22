@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/settings/settings_screen.dart';
@@ -25,6 +26,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return SafeArea(
       child: DefaultTabController(
         length: 2,
@@ -102,75 +104,79 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         padding: const EdgeInsets.symmetric(
                           horizontal: Sizes.size80,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                height: double.infinity,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(
-                                      Sizes.size4,
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            maxWidth: Breakpoints.sm,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(
+                                        Sizes.size4,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: const Text(
-                                  "Follow",
-                                  style: TextStyle(
-                                    fontSize: Sizes.size16,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
+                                  child: const Text(
+                                    "Follow",
+                                    style: TextStyle(
+                                      fontSize: Sizes.size16,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                            ),
-                            Gaps.h4,
-                            AspectRatio(
-                              aspectRatio: 1,
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey.shade300,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(
-                                      Sizes.size4,
+                              Gaps.h4,
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(
+                                        Sizes.size4,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: const FaIcon(
-                                  FontAwesomeIcons.youtube,
-                                  size: Sizes.size20,
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.youtube,
+                                    size: Sizes.size20,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Gaps.h4,
-                            AspectRatio(
-                              aspectRatio: 1,
-                              child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.grey.shade300,
-                                  ),
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(
-                                      Sizes.size4,
+                              Gaps.h4,
+                              AspectRatio(
+                                aspectRatio: 1,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey.shade300,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(
+                                        Sizes.size4,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: const FaIcon(
-                                  FontAwesomeIcons.caretDown,
-                                  size: Sizes.size16,
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.caretDown,
+                                    size: Sizes.size16,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -219,8 +225,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ScrollViewKeyboardDismissBehavior.onDrag,
                 itemCount: 20,
                 padding: EdgeInsets.zero,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: width > Breakpoints.lg ? 5 : 3,
                   crossAxisSpacing: Sizes.size2,
                   mainAxisSpacing: Sizes.size2,
                   childAspectRatio: 9 / 14,
