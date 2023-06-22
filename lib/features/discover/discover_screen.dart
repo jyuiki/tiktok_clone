@@ -201,6 +201,7 @@ class _DiscoverGridviewState extends State<DiscoverGridview>
               style: TextStyle(
                 fontSize: Sizes.size16 + Sizes.size2,
                 fontWeight: FontWeight.bold,
+                height: 1.2,
               ),
             ),
             Gaps.v5,
