@@ -9,36 +9,11 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Settings"),
       ),
-      body: const Column(
-        children: [
-          CircularProgressIndicator.adaptive(),
+      body: ListView(
+        children: const [
+          AboutListTile(),
         ],
       ),
-
-      // CloseButton(),
-
-      // ListWheelScrollView(
-      //   diameterRatio: 1.5,
-      //   offAxisFraction: 2,
-      //   itemExtent: 200,
-      //   children: [
-      //     for (var x in [1, 2, 2, 2, 2, 2, 34, 3, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3])
-      //       FractionallySizedBox(
-      //         widthFactor: 1,
-      //         child: Container(
-      //           color: Colors.teal,
-      //           alignment: Alignment.center,
-      //           child: const Text(
-      //             "data",
-      //             style: TextStyle(
-      //               color: Colors.white,
-      //               fontSize: 39,
-      //             ),
-      //           ),
-      //         ),
-      //       )
-      //   ],
-      // ),
     );
   }
 }
