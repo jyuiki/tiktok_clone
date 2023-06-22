@@ -4,6 +4,7 @@ import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/main.dart';
+import 'package:tiktok_clone/utils.dart';
 
 final tabs = [
   "Top",
@@ -81,21 +82,25 @@ class _DiscoverScreenState extends State<DiscoverScreen>
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Colors.grey.shade200,
+                fillColor: isDarkMode(context)
+                    ? Colors.grey.shade700
+                    : Colors.grey.shade200,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: Sizes.size20,
                 ),
-                prefixIcon: const Icon(
+                prefixIcon: Icon(
                   FontAwesomeIcons.magnifyingGlass,
                   opticalSize: 3,
-                  color: Colors.black,
+                  color: isDarkMode(context) ? Colors.white : Colors.black,
                   size: Sizes.size20,
                 ),
                 suffixIcon: GestureDetector(
                   onTap: () => _textEditingController.clear(),
                   child: Icon(
                     FontAwesomeIcons.solidCircleXmark,
-                    color: Colors.grey.shade600,
+                    color: isDarkMode(context)
+                        ? Colors.white
+                        : Colors.grey.shade600,
                     size: Sizes.size16 + Sizes.size2,
                   ),
                 ),
@@ -112,9 +117,6 @@ class _DiscoverScreenState extends State<DiscoverScreen>
             fontWeight: FontWeight.w600,
             fontSize: Sizes.size16,
           ),
-          indicatorColor: Colors.black,
-          unselectedLabelColor: Colors.grey.shade500,
-          labelColor: Colors.black,
           tabs: [
             for (var tab in tabs)
               Tab(
@@ -192,50 +194,52 @@ class _DiscoverGridviewState extends State<DiscoverGridview>
               ),
             ),
             Gaps.v10,
-            Text(
-              "${constraints.maxWidth} This is Very long caption for my tiktok blabalalbalablalblablabalalbalablalblablabalalbalablalbla",
+            const Text(
+              "This is Very long caption for my tiktok blabalalbalablalblablabalalbalablalblablabalalbalablalbla",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: Sizes.size16 + Sizes.size2,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Gaps.v5,
-            if (constraints.maxWidth < 200 || constraints.maxWidth > 250)
-              DefaultTextStyle(
-                style: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.w600,
-                ),
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 12,
-                      backgroundImage: NetworkImage(
-                          "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png"),
-                    ),
-                    Gaps.h8,
-                    const Expanded(
-                      child: Text(
-                        "https://github.githubassets.com/images/modules/profile/achi",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Gaps.h8,
-                    FaIcon(
-                      FontAwesomeIcons.heart,
-                      size: Sizes.size16,
-                      color: Colors.grey.shade600,
-                    ),
-                    Gaps.h2,
-                    const Text(
-                      "2.5M",
-                    ),
-                  ],
-                ),
+            // if (constraints.maxWidth < 200 || constraints.maxWidth > 250)
+            DefaultTextStyle(
+              style: TextStyle(
+                color: isDarkMode(context)
+                    ? Colors.grey.shade300
+                    : Colors.grey.shade600,
+                fontWeight: FontWeight.w600,
               ),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 12,
+                    backgroundImage: NetworkImage(
+                        "https://github.githubassets.com/images/modules/profile/achievements/pull-shark-default.png"),
+                  ),
+                  Gaps.h8,
+                  const Expanded(
+                    child: Text(
+                      "https://github.githubassets.com/images/modules/profile/achi",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Gaps.h8,
+                  FaIcon(
+                    FontAwesomeIcons.heart,
+                    size: Sizes.size16,
+                    color: Colors.grey.shade600,
+                  ),
+                  Gaps.h2,
+                  const Text(
+                    "2.5M",
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
