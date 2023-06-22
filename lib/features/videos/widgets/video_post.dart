@@ -45,6 +45,8 @@ class _VideoPostState extends State<VideoPost>
   ];
   bool _isSeeMore = false;
 
+  bool _isMute = false;
+
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
       if (_videoPlayerController.value.duration ==
@@ -59,9 +61,10 @@ class _VideoPostState extends State<VideoPost>
     await _videoPlayerController.setLooping(true);
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
+      _isMute = true;
     }
-    setState(() {});
     _videoPlayerController.addListener(_onVideoChange);
+    setState(() {});
   }
 
   @override
@@ -127,6 +130,18 @@ class _VideoPostState extends State<VideoPost>
       builder: (context) => const VideoComments(),
     );
     _onTogglePause();
+  }
+
+  void _onVolumeTap() async {
+    _isMute = !_isMute;
+
+    if (_isMute) {
+      await _videoPlayerController.setVolume(0);
+    } else {
+      await _videoPlayerController.setVolume(1);
+    }
+
+    setState(() {});
   }
 
   @override
@@ -243,6 +258,41 @@ class _VideoPostState extends State<VideoPost>
             right: 10,
             child: Column(
               children: [
+                GestureDetector(
+                  onTap: _onVolumeTap,
+                  child: Container(
+                    height: 50,
+                    width: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.transparent,
+                      border: Border.all(
+                        color: Colors.white,
+                        width: 2,
+                      ),
+                    ),
+                    child: AnimatedCrossFade(
+                      duration: const Duration(
+                        milliseconds: 200,
+                      ),
+                      firstChild: const FaIcon(
+                        FontAwesomeIcons.volumeOff,
+                        color: Colors.white,
+                        size: Sizes.size20,
+                      ),
+                      secondChild: const FaIcon(
+                        FontAwesomeIcons.volumeHigh,
+                        color: Colors.white,
+                        size: Sizes.size20,
+                      ),
+                      crossFadeState: _isMute
+                          ? CrossFadeState.showFirst
+                          : CrossFadeState.showSecond,
+                    ),
+                  ),
+                ),
+                Gaps.v24,
                 const CircleAvatar(
                   radius: 25,
                   backgroundColor: Colors.black,
