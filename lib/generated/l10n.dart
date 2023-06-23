@@ -50,13 +50,17 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Sign up for {nameOfTheApp}`
-  String signUpTitle(String nameOfTheApp) {
+  /// `Sign up for {nameOfTheApp} {when}`
+  String signUpTitle(String nameOfTheApp, DateTime when) {
+    final DateFormat whenDateFormat =
+        DateFormat('🫰 LLLL 👻 Hm', Intl.getCurrentLocale());
+    final String whenString = whenDateFormat.format(when);
+
     return Intl.message(
-      'Sign up for $nameOfTheApp',
+      'Sign up for $nameOfTheApp $whenString',
       name: 'signUpTitle',
       desc: 'The tile people see when they open the app for the first time.',
-      args: [nameOfTheApp],
+      args: [nameOfTheApp, whenString],
     );
   }
 
@@ -128,7 +132,7 @@ class S {
     final String valueString = valueNumberFormat.format(value);
 
     return Intl.message(
-      '$valueString',
+      valueString,
       name: 'likeCount',
       desc: 'blahblahblahblah....',
       args: [valueString],
@@ -139,11 +143,14 @@ class S {
   String commentCount(int value) {
     final NumberFormat valueNumberFormat = NumberFormat.compact(
       locale: Intl.getCurrentLocale(),
+      // 축약을 사용할 때, 특정 언어 방식(15K, 654.4M 등)만 사용할 경우
+      // locale 인자에 해당 Locale을 적용
+      // locale = Locale("en").languageCode
     );
     final String valueString = valueNumberFormat.format(value);
 
     return Intl.message(
-      '$valueString',
+      valueString,
       name: 'commentCount',
       desc: 'blahblahblahblah....',
       args: [valueString],
