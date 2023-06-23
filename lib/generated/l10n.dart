@@ -51,7 +51,7 @@ class S {
   }
 
   /// `Sign up for {nameOfTheApp}`
-  String signUpTitle(Object nameOfTheApp) {
+  String signUpTitle(String nameOfTheApp) {
     return Intl.message(
       'Sign up for $nameOfTheApp',
       name: 'signUpTitle',
@@ -61,7 +61,7 @@ class S {
   }
 
   /// `Log in your {nameOfTheApp} account`
-  String loginTitle(Object nameOfTheApp) {
+  String loginTitle(String nameOfTheApp) {
     return Intl.message(
       'Log in your $nameOfTheApp account',
       name: 'loginTitle',
@@ -117,6 +117,51 @@ class S {
       name: 'logIn',
       desc: '',
       args: [gender],
+    );
+  }
+
+  /// `{value}`
+  String likeCount(int value) {
+    final NumberFormat valueNumberFormat = NumberFormat.compact(
+      locale: Intl.getCurrentLocale(),
+    );
+    final String valueString = valueNumberFormat.format(value);
+
+    return Intl.message(
+      '$valueString',
+      name: 'likeCount',
+      desc: 'blahblahblahblah....',
+      args: [valueString],
+    );
+  }
+
+  /// `{value}`
+  String commentCount(int value) {
+    final NumberFormat valueNumberFormat = NumberFormat.compact(
+      locale: Intl.getCurrentLocale(),
+    );
+    final String valueString = valueNumberFormat.format(value);
+
+    return Intl.message(
+      '$valueString',
+      name: 'commentCount',
+      desc: 'blahblahblahblah....',
+      args: [valueString],
+    );
+  }
+
+  /// `{value} {value2, plural, =1{comment} other{comments}}`
+  String commentTitle(int value, num value2) {
+    final NumberFormat valueNumberFormat = NumberFormat.compact(
+      locale: Intl.getCurrentLocale(),
+    );
+    final String valueString = valueNumberFormat.format(value);
+
+    return Intl.message(
+      '$valueString ${Intl.plural(value2, one: 'comment', other: 'comments')}',
+      name: 'commentTitle',
+      desc: 'blahblahblahblah....',
+      args: [valueString, value2],
     );
   }
 }
