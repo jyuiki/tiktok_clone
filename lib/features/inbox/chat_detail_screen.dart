@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/main.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   const ChatDetailScreen({super.key});
@@ -128,7 +127,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     GestureDetector(
                       onTap: () {
                         _onCloseKeyboard();
-                        logger.i("$index");
                       },
                       child: Container(
                         padding: const EdgeInsets.all(

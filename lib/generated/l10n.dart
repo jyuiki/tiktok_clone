@@ -132,7 +132,7 @@ class S {
     final String valueString = valueNumberFormat.format(value);
 
     return Intl.message(
-      valueString,
+      '$valueString',
       name: 'likeCount',
       desc: 'blahblahblahblah....',
       args: [valueString],
@@ -143,14 +143,11 @@ class S {
   String commentCount(int value) {
     final NumberFormat valueNumberFormat = NumberFormat.compact(
       locale: Intl.getCurrentLocale(),
-      // 축약을 사용할 때, 특정 언어 방식(15K, 654.4M 등)만 사용할 경우
-      // locale 인자에 해당 Locale을 적용
-      // locale = Locale("en").languageCode
     );
     final String valueString = valueNumberFormat.format(value);
 
     return Intl.message(
-      valueString,
+      '$valueString',
       name: 'commentCount',
       desc: 'blahblahblahblah....',
       args: [valueString],

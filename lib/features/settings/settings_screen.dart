@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
-import 'package:tiktok_clone/main.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -72,14 +71,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     firstDate: DateTime(1980),
                     lastDate: DateTime(2030),
                   );
-                  logger.i(date);
 
                   if (!mounted) return;
                   final time = await showTimePicker(
                     context: context,
                     initialTime: TimeOfDay.now(),
                   );
-                  logger.i(time);
 
                   if (!mounted) return;
                   final booking = await showDateRangePicker(
@@ -98,8 +95,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       );
                     },
                   );
-
-                  logger.i(booking);
                 },
                 title: const Text("What is your birthday?"),
               ),

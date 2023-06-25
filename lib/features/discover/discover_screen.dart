@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/main.dart';
 import 'package:tiktok_clone/utils.dart';
 
 final tabs = [
@@ -28,16 +27,11 @@ class _DiscoverScreenState extends State<DiscoverScreen>
   final TextEditingController _textEditingController = TextEditingController();
   late final TabController _tabController;
 
-  void _onSearchChanged(String value) {
-    logger.d(value);
-  }
+  void _onSearchChanged(String value) {}
 
-  void _onSearchSubmitted(String value) {
-    logger.d(value);
-  }
+  void _onSearchSubmitted(String value) {}
 
   void _tabListener() {
-    logger.i("tab changed index = ${tabs[_tabController.index]}");
     FocusScope.of(context).unfocus();
   }
 
@@ -165,7 +159,6 @@ class _DiscoverGridviewState extends State<DiscoverGridview>
   Widget build(BuildContext context) {
     super.build(context);
     final width = MediaQuery.of(context).size.width;
-    logger.i(width);
     return GridView.builder(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
       itemCount: 20,
