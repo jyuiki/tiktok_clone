@@ -20,15 +20,19 @@ final router = GoRouter(
       builder: (context, state) => const UsernameScreen(),
     ),
     GoRoute(
-      path: EmailScreen.routeName,
-      builder: (context, state) => const EmailScreen(),
-    ),
+        path: EmailScreen.routeName,
+        builder: (context, state) {
+          final args = state.extra as String;
+          return EmailScreen(username: args);
+        }),
     GoRoute(
       path: "/users/:username",
       builder: (context, state) {
-        final username = state.params["username"]!;
+        final username = state.params["username"];
+        final tab = state.queryParams["show"];
         return UserProfileScreen(
-          username: username,
+          username: username!,
+          tab: tab!,
         );
       },
     ),
