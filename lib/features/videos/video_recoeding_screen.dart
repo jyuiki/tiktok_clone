@@ -317,8 +317,8 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                               onVerticalDragUpdate: _cameraMaxZoomLevel <= 1.0
                                   ? null
                                   : _onUpdateCameraZoom,
-                              onTapDown: null, //_startRecording,
-                              onTapUp: (_) {}, //_stopRecording(),
+                              onTapDown: _startRecording,
+                              onTapUp: (_) => _stopRecording(),
                               child: ScaleTransition(
                                 scale: _buttonAnimation,
                                 child: Stack(
