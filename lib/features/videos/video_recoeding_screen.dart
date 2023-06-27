@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/video_preview_screen.dart';
+import 'package:tiktok_clone/main.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
   const VideoRecordingScreen({super.key});
@@ -42,6 +44,16 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
 
   late CameraController _cameraController;
 
+  late final double _dragStartPosition =
+      (MediaQuery.of(context).size.height - Sizes.size80).floorToDouble();
+
+  late final double _verticalDragMaxHeight =
+      _dragStartPosition - kToolbarHeight - 150;
+
+  late final double _cameraMaxZoomLevel;
+
+  double _zoomLevel = 1.0;
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (!_hasPermission) return;
@@ -66,6 +78,9 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.initialize();
 
     await _cameraController.prepareForVideoRecording();
+
+    _cameraMaxZoomLevel = await _cameraController.getMaxZoomLevel();
+    logger.d("maxZoomLevel = $_cameraMaxZoomLevel");
 
     _flashMode = _cameraController.value.flashMode;
 
@@ -202,6 +217,28 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     );
   }
 
+  Future<void> _onUpdateCameraZoom(DragUpdateDetails details) async {
+    double dragY =
+        _dragStartPosition - details.globalPosition.dy.floorToDouble();
+    double zoomLevel = 1.0;
+
+    zoomLevel += (dragY * _cameraMaxZoomLevel) / _verticalDragMaxHeight;
+
+    if (zoomLevel > _cameraMaxZoomLevel) {
+      zoomLevel = _cameraMaxZoomLevel;
+    } else if (dragY <= 0) {
+      zoomLevel = 1.0;
+    }
+
+    if (dragY <= _verticalDragMaxHeight) {
+      logger.d("zoomLevel = $zoomLevel");
+      await _cameraController.setZoomLevel(zoomLevel);
+      setState(() {
+        _zoomLevel = zoomLevel;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -276,8 +313,12 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                           children: [
                             const Spacer(),
                             GestureDetector(
-                              onTapDown: _startRecording,
-                              onTapUp: (_) => _stopRecording(),
+                              dragStartBehavior: DragStartBehavior.start,
+                              onVerticalDragUpdate: _cameraMaxZoomLevel <= 1.0
+                                  ? null
+                                  : _onUpdateCameraZoom,
+                              onTapDown: null, //_startRecording,
+                              onTapUp: (_) {}, //_stopRecording(),
                               child: ScaleTransition(
                                 scale: _buttonAnimation,
                                 child: Stack(
@@ -318,6 +359,17 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                      Positioned(
+                        left: 20,
+                        top: 20,
+                        child: Text(
+                          "X ${_zoomLevel.toStringAsFixed(2)}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: Sizes.size24,
+                          ),
                         ),
                       ),
                     ],
