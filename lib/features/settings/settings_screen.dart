@@ -36,6 +36,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: ListView(
             children: [
               ValueListenableBuilder(
+                valueListenable: darkModeConfig,
+                builder: (context, value, child) => SwitchListTile.adaptive(
+                  value: value,
+                  onChanged: (value) {
+                    darkModeConfig.value = !darkModeConfig.value;
+                  },
+                  title: const Text("Enable Dark Mode"),
+                  subtitle: Text(
+                      "Current mode is ${darkModeConfig.value ? "Dark Mode" : "Light Mode"}"),
+                ),
+              ),
+              ValueListenableBuilder(
                 valueListenable: videoConfig,
                 builder: (context, value, child) => SwitchListTile.adaptive(
                   value: value,

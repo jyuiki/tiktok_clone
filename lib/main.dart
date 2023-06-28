@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
@@ -33,8 +34,25 @@ void main() async {
   runApp(const TikTokApp());
 }
 
-class TikTokApp extends StatelessWidget {
+class TikTokApp extends StatefulWidget {
   const TikTokApp({super.key});
+
+  @override
+  State<TikTokApp> createState() => _TikTokAppState();
+}
+
+class _TikTokAppState extends State<TikTokApp> {
+  bool _isDarkMode = darkModeConfig.value;
+
+  @override
+  void initState() {
+    super.initState();
+
+    darkModeConfig.addListener(() {
+      _isDarkMode = darkModeConfig.value;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +71,7 @@ class TikTokApp extends StatelessWidget {
         Locale("en"),
         Locale("ko"),
       ],
-      themeMode: ThemeMode.system,
+      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData(
           useMaterial3: true,
           textTheme: Typography.blackMountainView,
