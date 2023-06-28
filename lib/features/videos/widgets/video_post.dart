@@ -47,7 +47,7 @@ class _VideoPostState extends State<VideoPost>
   ];
   bool _isSeeMore = false;
 
-  bool _isMute = videoConfig.autoMute;
+  bool _isMute = videoConfig.value;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -66,8 +66,8 @@ class _VideoPostState extends State<VideoPost>
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
       _isMute = true;
-      if (!videoConfig.autoMute) {
-        videoConfig.toggleAutoMute();
+      if (!videoConfig.value) {
+        videoConfig.value = !videoConfig.value;
       }
     }
     _videoPlayerController.addListener(_onVideoChange);
@@ -89,7 +89,7 @@ class _VideoPostState extends State<VideoPost>
     );
 
     videoConfig.addListener(() {
-      _isMute = videoConfig.autoMute;
+      _isMute = videoConfig.value;
       _setVolume();
     });
   }
@@ -269,7 +269,9 @@ class _VideoPostState extends State<VideoPost>
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () => videoConfig.toggleAutoMute(),
+                  onTap: () {
+                    videoConfig.value = !videoConfig.value;
+                  },
                   child: Container(
                     height: 50,
                     width: 50,
