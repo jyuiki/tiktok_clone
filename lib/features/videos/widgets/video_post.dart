@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_button.dart';
@@ -60,7 +61,9 @@ class _VideoPostState extends State<VideoPost>
   void _initVideoPlayer() async {
     await _videoPlayerController.initialize();
     await _videoPlayerController.setLooping(true);
-    if (kIsWeb) {
+
+    if (!mounted) return;
+    if (kIsWeb || VideoConfig.of(context).autoMute) {
       await _videoPlayerController.setVolume(0);
       _isMute = true;
     }
