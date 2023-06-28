@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
@@ -47,8 +48,6 @@ class _VideoPostState extends State<VideoPost>
   ];
   bool _isSeeMore = false;
 
-  bool _isMute = videoConfig.value;
-
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
       if (_videoPlayerController.value.duration ==
@@ -65,9 +64,9 @@ class _VideoPostState extends State<VideoPost>
     if (!mounted) return;
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
-      _isMute = true;
-      if (!videoConfig.value) {
-        videoConfig.value = !videoConfig.value;
+
+      if (mounted && !context.read<VideoConfig>().isMuted) {
+        context.read<VideoConfig>().toggleIsMuted();
       }
     }
     _videoPlayerController.addListener(_onVideoChange);
@@ -88,15 +87,17 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    videoConfig.addListener(() {
-      _isMute = videoConfig.value;
-      _setVolume();
+    context.read<VideoConfig>().addListener(() {
+      _toggleMute();
     });
   }
 
   @override
   void dispose() {
     _videoPlayerController.dispose();
+    context.read<VideoConfig>().removeListener(() {
+      _toggleMute();
+    });
     super.dispose();
   }
 
@@ -144,14 +145,14 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause();
   }
 
-  void _setVolume() async {
-    if (_isMute) {
+  void _toggleMute() async {
+    final bool isMute = context.read<VideoConfig>().isMuted;
+
+    if (isMute) {
       await _videoPlayerController.setVolume(0);
     } else {
       await _videoPlayerController.setVolume(1);
     }
-
-    setState(() {});
   }
 
   @override
@@ -269,9 +270,7 @@ class _VideoPostState extends State<VideoPost>
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    videoConfig.value = !videoConfig.value;
-                  },
+                  onTap: () => context.read<VideoConfig>().toggleIsMuted(),
                   child: Container(
                     height: 50,
                     width: 50,
@@ -298,7 +297,7 @@ class _VideoPostState extends State<VideoPost>
                         color: Colors.white,
                         size: Sizes.size20,
                       ),
-                      crossFadeState: _isMute
+                      crossFadeState: context.watch<VideoConfig>().isMuted
                           ? CrossFadeState.showFirst
                           : CrossFadeState.showSecond,
                     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -57,92 +58,99 @@ class _TikTokAppState extends State<TikTokApp> {
   @override
   Widget build(BuildContext context) {
     // S.load(const Locale("en"));
-    return MaterialApp.router(
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
-      title: 'TikTok Clone',
-      localizationsDelegates: const [
-        S.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => VideoConfig(),
+        ),
       ],
-      supportedLocales: const [
-        Locale("en"),
-        Locale("ko"),
-      ],
-      themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
-      theme: ThemeData(
-          useMaterial3: true,
-          textTheme: Typography.blackMountainView,
-          brightness: Brightness.light,
-          scaffoldBackgroundColor: Colors.white,
-          primaryColor: const Color(0xFFE9435A),
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: Color(0xFFE9435A),
-          ),
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          appBarTheme: const AppBarTheme(
-            foregroundColor: Colors.black,
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            elevation: 0,
-            titleTextStyle: TextStyle(
-              color: Colors.black,
-              fontSize: Sizes.size16 + Sizes.size2,
-              fontWeight: FontWeight.w600,
+      child: MaterialApp.router(
+        routerConfig: router,
+        debugShowCheckedModeBanner: false,
+        title: 'TikTok Clone',
+        localizationsDelegates: const [
+          S.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale("en"),
+          Locale("ko"),
+        ],
+        themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
+        theme: ThemeData(
+            useMaterial3: true,
+            textTheme: Typography.blackMountainView,
+            brightness: Brightness.light,
+            scaffoldBackgroundColor: Colors.white,
+            primaryColor: const Color(0xFFE9435A),
+            textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: Color(0xFFE9435A),
             ),
-          ),
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            appBarTheme: const AppBarTheme(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.white,
+              surfaceTintColor: Colors.white,
+              elevation: 0,
+              titleTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: Sizes.size16 + Sizes.size2,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            tabBarTheme: TabBarTheme(
+              labelColor: Colors.black,
+              indicatorColor: Colors.black,
+              unselectedLabelColor: Colors.grey.shade500,
+              indicator: const UnderlineTabIndicator(
+                borderSide: BorderSide(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            listTileTheme: const ListTileThemeData(
+              iconColor: Colors.black,
+            )),
+        darkTheme: ThemeData(
+          useMaterial3: true,
           tabBarTheme: TabBarTheme(
-            labelColor: Colors.black,
-            indicatorColor: Colors.black,
-            unselectedLabelColor: Colors.grey.shade500,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.grey.shade700,
             indicator: const UnderlineTabIndicator(
               borderSide: BorderSide(
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
           ),
-          listTileTheme: const ListTileThemeData(
-            iconColor: Colors.black,
-          )),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        tabBarTheme: TabBarTheme(
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.grey.shade700,
-          indicator: const UnderlineTabIndicator(
-            borderSide: BorderSide(
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: Color(0xFFE9435A),
+          ),
+          textTheme: Typography.whiteMountainView,
+          brightness: Brightness.dark,
+          scaffoldBackgroundColor: Colors.black,
+          bottomAppBarTheme: BottomAppBarTheme(
+            color: Colors.grey.shade900,
+          ),
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.grey.shade900,
+            surfaceTintColor: Colors.grey.shade900,
+            titleTextStyle: const TextStyle(
               color: Colors.white,
+              fontSize: Sizes.size16 + Sizes.size2,
+              fontWeight: FontWeight.w600,
+            ),
+            actionsIconTheme: IconThemeData(
+              color: Colors.grey.shade100,
+            ),
+            iconTheme: IconThemeData(
+              color: Colors.grey.shade100,
             ),
           ),
+          primaryColor: const Color(0xFFE9435A),
         ),
-        textSelectionTheme: const TextSelectionThemeData(
-          cursorColor: Color(0xFFE9435A),
-        ),
-        textTheme: Typography.whiteMountainView,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black,
-        bottomAppBarTheme: BottomAppBarTheme(
-          color: Colors.grey.shade900,
-        ),
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey.shade900,
-          surfaceTintColor: Colors.grey.shade900,
-          titleTextStyle: const TextStyle(
-            color: Colors.white,
-            fontSize: Sizes.size16 + Sizes.size2,
-            fontWeight: FontWeight.w600,
-          ),
-          actionsIconTheme: IconThemeData(
-            color: Colors.grey.shade100,
-          ),
-          iconTheme: IconThemeData(
-            color: Colors.grey.shade100,
-          ),
-        ),
-        primaryColor: const Color(0xFFE9435A),
       ),
     );
   }
