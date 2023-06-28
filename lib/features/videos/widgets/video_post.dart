@@ -47,7 +47,7 @@ class _VideoPostState extends State<VideoPost>
   ];
   bool _isSeeMore = false;
 
-  bool _isMute = false;
+  bool _isMute = videoConfig.autoMute;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -63,12 +63,12 @@ class _VideoPostState extends State<VideoPost>
     await _videoPlayerController.setLooping(true);
 
     if (!mounted) return;
-    if (kIsWeb || VideoConfigData.of(context).autoMute) {
+    if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
       _isMute = true;
-    } else {
-      await _videoPlayerController.setVolume(1);
-      _isMute = false;
+      if (!videoConfig.autoMute) {
+        videoConfig.toggleAutoMute();
+      }
     }
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
@@ -87,6 +87,11 @@ class _VideoPostState extends State<VideoPost>
       value: 1.5,
       duration: _animationDuration,
     );
+
+    videoConfig.addListener(() {
+      _isMute = videoConfig.autoMute;
+      _setVolume();
+    });
   }
 
   @override
@@ -139,17 +144,11 @@ class _VideoPostState extends State<VideoPost>
     _onTogglePause();
   }
 
-  void _onVolumeTap() async {
-    _isMute = !_isMute;
-
+  void _setVolume() async {
     if (_isMute) {
       await _videoPlayerController.setVolume(0);
     } else {
       await _videoPlayerController.setVolume(1);
-    }
-
-    if (mounted) {
-      VideoConfigData.of(context).toggleMuted();
     }
 
     setState(() {});
@@ -270,7 +269,7 @@ class _VideoPostState extends State<VideoPost>
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: _onVolumeTap,
+                  onTap: () => videoConfig.toggleAutoMute(),
                   child: Container(
                     height: 50,
                     width: 50,
