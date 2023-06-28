@@ -63,9 +63,12 @@ class _VideoPostState extends State<VideoPost>
     await _videoPlayerController.setLooping(true);
 
     if (!mounted) return;
-    if (kIsWeb || VideoConfig.of(context).autoMute) {
+    if (kIsWeb || VideoConfigData.of(context).autoMute) {
       await _videoPlayerController.setVolume(0);
       _isMute = true;
+    } else {
+      await _videoPlayerController.setVolume(1);
+      _isMute = false;
     }
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
@@ -143,6 +146,10 @@ class _VideoPostState extends State<VideoPost>
       await _videoPlayerController.setVolume(0);
     } else {
       await _videoPlayerController.setVolume(1);
+    }
+
+    if (mounted) {
+      VideoConfigData.of(context).toggleMuted();
     }
 
     setState(() {});
