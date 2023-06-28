@@ -286,6 +286,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                     children: [
                       if (!_noCamera && _cameraController.value.isInitialized)
                         CameraPreview(_cameraController),
+                      const Positioned(
+                        top: Sizes.size20,
+                        left: Sizes.size20,
+                        child: CloseButton(
+                          color: Colors.white,
+                        ),
+                      ),
                       if (!_noCamera)
                         Positioned(
                           top: Sizes.size20,
@@ -384,7 +391,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
                         ),
                       ),
                       Positioned(
-                        left: 20,
+                        right: 20,
                         top: 20,
                         child: Text(
                           "X ${_zoomLevel.toStringAsFixed(2)}",
