@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +11,8 @@ import 'package:tiktok_clone/features/videos/repos/playback_config_repo.dart';
 import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
 import 'package:tiktok_clone/router.dart';
+
+import 'firebase_options.dart';
 
 var logger = Logger(
   printer: PrettyPrinter(
@@ -24,6 +27,10 @@ var logger = Logger(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   await SystemChrome.setPreferredOrientations(
     [
