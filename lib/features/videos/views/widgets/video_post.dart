@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
@@ -64,10 +64,8 @@ class _VideoPostState extends State<VideoPost>
     if (!mounted) return;
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
-
-      // if (mounted && !context.read<VideoConfig>().isMuted) {
-      //   context.read<VideoConfig>().toggleIsMuted();
-      // }
+    } else {
+      _onPlaybackConfigChanged();
     }
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
@@ -87,25 +85,36 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    // context.read<VideoConfig>().addListener(() {
-    //   _toggleMute();
-    // });
+    context
+        .read<PlaybackConfigViewModel>()
+        .addListener(_onPlaybackConfigChanged);
   }
 
   @override
   void dispose() {
     _videoPlayerController.dispose();
-    // context.read<VideoConfig>().removeListener(() {
-    //   _toggleMute();
-    // });
     super.dispose();
+  }
+
+  void _onPlaybackConfigChanged() async {
+    if (!mounted) return;
+    final muted = context.read<PlaybackConfigViewModel>().muted;
+
+    if (muted) {
+      await _videoPlayerController.setVolume(0);
+    } else {
+      await _videoPlayerController.setVolume(1);
+    }
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      _videoPlayerController.play();
+      final autoPlay = context.read<PlaybackConfigViewModel>().autoPlay;
+      if (autoPlay) {
+        _videoPlayerController.play();
+      }
     }
 
     if (_videoPlayerController.value.isPlaying && info.visibleFraction == 0) {
@@ -143,16 +152,6 @@ class _VideoPostState extends State<VideoPost>
       builder: (context) => const VideoComments(),
     );
     _onTogglePause();
-  }
-
-  void _toggleMute() async {
-    // final bool isMute = context.read<VideoConfig>().isMuted;
-
-    // if (isMute) {
-    //   await _videoPlayerController.setVolume(0);
-    // } else {
-    //   await _videoPlayerController.setVolume(1);
-    // }
   }
 
   @override
@@ -270,7 +269,9 @@ class _VideoPostState extends State<VideoPost>
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () {}, //context.read<VideoConfig>().toggleIsMuted(),
+                  onTap: () => context
+                      .read<PlaybackConfigViewModel>()
+                      .setMuted(!context.read<PlaybackConfigViewModel>().muted),
                   child: Container(
                     height: 50,
                     width: 50,
@@ -283,23 +284,24 @@ class _VideoPostState extends State<VideoPost>
                         width: 2,
                       ),
                     ),
-                    child: const AnimatedCrossFade(
-                      duration: Duration(
+                    child: AnimatedCrossFade(
+                      duration: const Duration(
                         milliseconds: 200,
                       ),
-                      firstChild: FaIcon(
+                      firstChild: const FaIcon(
                         FontAwesomeIcons.volumeOff,
                         color: Colors.white,
                         size: Sizes.size20,
                       ),
-                      secondChild: FaIcon(
+                      secondChild: const FaIcon(
                         FontAwesomeIcons.volumeHigh,
                         color: Colors.white,
                         size: Sizes.size20,
                       ),
-                      crossFadeState: false
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
+                      crossFadeState:
+                          context.watch<PlaybackConfigViewModel>().muted
+                              ? CrossFadeState.showFirst
+                              : CrossFadeState.showSecond,
                     ),
                   ),
                 ),
