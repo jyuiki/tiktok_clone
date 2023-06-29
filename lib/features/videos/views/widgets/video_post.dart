@@ -1,10 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_button.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_comments.dart';
 import 'package:tiktok_clone/generated/l10n.dart';
@@ -48,7 +46,7 @@ class _VideoPostState extends State<VideoPost>
   ];
   bool _isSeeMore = false;
 
-  late bool _isMuted = context.read<PlaybackConfigViewModel>().muted;
+  late bool _isMuted = false; // context.read<PlaybackConfigViewModel>().muted;
 
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
@@ -87,9 +85,9 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    context
-        .read<PlaybackConfigViewModel>()
-        .addListener(_onPlaybackConfigChanged);
+    // context
+    //     .read<PlaybackConfigViewModel>()
+    //     .addListener(_onPlaybackConfigChanged);
   }
 
   @override
@@ -105,7 +103,7 @@ class _VideoPostState extends State<VideoPost>
 
   void _onPlaybackConfigChanged() async {
     if (!mounted) return;
-    _isMuted = context.read<PlaybackConfigViewModel>().muted;
+    //_isMuted = context.read<PlaybackConfigViewModel>().muted;
     _toggleVolume();
   }
 
@@ -123,8 +121,8 @@ class _VideoPostState extends State<VideoPost>
     if (info.visibleFraction == 1 &&
         !_isPaused &&
         !_videoPlayerController.value.isPlaying) {
-      final autoPlay = context.read<PlaybackConfigViewModel>().autoPlay;
-      if (autoPlay) {
+      //final autoPlay = context.read<PlaybackConfigViewModel>().autoPlay;
+      if (false) {
         _videoPlayerController.play();
       }
     }
