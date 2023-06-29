@@ -65,9 +65,9 @@ class _VideoPostState extends State<VideoPost>
     if (kIsWeb) {
       await _videoPlayerController.setVolume(0);
 
-      if (mounted && !context.read<VideoConfig>().isMuted) {
-        context.read<VideoConfig>().toggleIsMuted();
-      }
+      // if (mounted && !context.read<VideoConfig>().isMuted) {
+      //   context.read<VideoConfig>().toggleIsMuted();
+      // }
     }
     _videoPlayerController.addListener(_onVideoChange);
     setState(() {});
@@ -87,17 +87,17 @@ class _VideoPostState extends State<VideoPost>
       duration: _animationDuration,
     );
 
-    context.read<VideoConfig>().addListener(() {
-      _toggleMute();
-    });
+    // context.read<VideoConfig>().addListener(() {
+    //   _toggleMute();
+    // });
   }
 
   @override
   void dispose() {
     _videoPlayerController.dispose();
-    context.read<VideoConfig>().removeListener(() {
-      _toggleMute();
-    });
+    // context.read<VideoConfig>().removeListener(() {
+    //   _toggleMute();
+    // });
     super.dispose();
   }
 
@@ -146,13 +146,13 @@ class _VideoPostState extends State<VideoPost>
   }
 
   void _toggleMute() async {
-    final bool isMute = context.read<VideoConfig>().isMuted;
+    // final bool isMute = context.read<VideoConfig>().isMuted;
 
-    if (isMute) {
-      await _videoPlayerController.setVolume(0);
-    } else {
-      await _videoPlayerController.setVolume(1);
-    }
+    // if (isMute) {
+    //   await _videoPlayerController.setVolume(0);
+    // } else {
+    //   await _videoPlayerController.setVolume(1);
+    // }
   }
 
   @override
@@ -270,7 +270,7 @@ class _VideoPostState extends State<VideoPost>
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () => context.read<VideoConfig>().toggleIsMuted(),
+                  onTap: () {}, //context.read<VideoConfig>().toggleIsMuted(),
                   child: Container(
                     height: 50,
                     width: 50,
@@ -283,21 +283,21 @@ class _VideoPostState extends State<VideoPost>
                         width: 2,
                       ),
                     ),
-                    child: AnimatedCrossFade(
-                      duration: const Duration(
+                    child: const AnimatedCrossFade(
+                      duration: Duration(
                         milliseconds: 200,
                       ),
-                      firstChild: const FaIcon(
+                      firstChild: FaIcon(
                         FontAwesomeIcons.volumeOff,
                         color: Colors.white,
                         size: Sizes.size20,
                       ),
-                      secondChild: const FaIcon(
+                      secondChild: FaIcon(
                         FontAwesomeIcons.volumeHigh,
                         color: Colors.white,
                         size: Sizes.size20,
                       ),
-                      crossFadeState: context.watch<VideoConfig>().isMuted
+                      crossFadeState: false
                           ? CrossFadeState.showFirst
                           : CrossFadeState.showSecond,
                     ),

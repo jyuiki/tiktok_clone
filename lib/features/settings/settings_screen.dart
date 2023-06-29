@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:tiktok_clone/common/widgets/video_configuration/video_config.dart';
 import 'package:tiktok_clone/constants/breakpoints.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -49,10 +50,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               SwitchListTile.adaptive(
-                value: context.watch<VideoConfig>().isMuted,
-                onChanged: (_) => context.read<VideoConfig>().toggleIsMuted(),
-                title: const Text("Auto Mute"),
-                subtitle: const Text("Videos Muted by default"),
+                value: context.watch<PlaybackConfigViewModel>().muted,
+                onChanged: (value) =>
+                    context.read<PlaybackConfigViewModel>().setMuted(value),
+                title: const Text("Muted Video"),
+                subtitle: const Text("Video will be muted by default."),
+              ),
+              SwitchListTile.adaptive(
+                value: context.watch<PlaybackConfigViewModel>().autoPlay,
+                onChanged: (value) =>
+                    context.read<PlaybackConfigViewModel>().setAutoPlay(value),
+                title: const Text("Autoplay"),
+                subtitle: const Text("Video will start playing automatically."),
               ),
               Switch.adaptive(
                 value: _notifications,
