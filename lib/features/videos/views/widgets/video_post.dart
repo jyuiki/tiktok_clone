@@ -48,6 +48,8 @@ class _VideoPostState extends State<VideoPost>
   ];
   bool _isSeeMore = false;
 
+  late bool _isMuted = context.read<PlaybackConfigViewModel>().muted;
+
   void _onVideoChange() {
     if (_videoPlayerController.value.isInitialized) {
       if (_videoPlayerController.value.duration ==
@@ -62,7 +64,7 @@ class _VideoPostState extends State<VideoPost>
     await _videoPlayerController.setLooping(true);
 
     if (!mounted) return;
-    if (kIsWeb) {
+    if (kIsWeb && widget.index == 0) {
       await _videoPlayerController.setVolume(0);
     } else {
       _onPlaybackConfigChanged();
@@ -96,15 +98,25 @@ class _VideoPostState extends State<VideoPost>
     super.dispose();
   }
 
+  void _onTapVolume() {
+    _isMuted = !_isMuted;
+    _toggleVolume();
+  }
+
   void _onPlaybackConfigChanged() async {
     if (!mounted) return;
-    final muted = context.read<PlaybackConfigViewModel>().muted;
+    _isMuted = context.read<PlaybackConfigViewModel>().muted;
+    _toggleVolume();
+  }
 
-    if (muted) {
+  void _toggleVolume() async {
+    if (_isMuted) {
       await _videoPlayerController.setVolume(0);
     } else {
       await _videoPlayerController.setVolume(1);
     }
+
+    setState(() {});
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {
@@ -269,9 +281,7 @@ class _VideoPostState extends State<VideoPost>
             child: Column(
               children: [
                 GestureDetector(
-                  onTap: () => context
-                      .read<PlaybackConfigViewModel>()
-                      .setMuted(!context.read<PlaybackConfigViewModel>().muted),
+                  onTap: _onTapVolume,
                   child: Container(
                     height: 50,
                     width: 50,
@@ -298,10 +308,9 @@ class _VideoPostState extends State<VideoPost>
                         color: Colors.white,
                         size: Sizes.size20,
                       ),
-                      crossFadeState:
-                          context.watch<PlaybackConfigViewModel>().muted
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
+                      crossFadeState: _isMuted
+                          ? CrossFadeState.showFirst
+                          : CrossFadeState.showSecond,
                     ),
                   ),
                 ),
