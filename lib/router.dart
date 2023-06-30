@@ -12,6 +12,7 @@ import 'package:tiktok_clone/features/onbording/interests_screen.dart';
 import 'package:tiktok_clone/features/videos/video_recoeding_screen.dart';
 
 final routerProvider = Provider((ref) {
+  ref.watch(authState);
   return GoRouter(
     initialLocation: "/home",
     redirect: (context, state) {
