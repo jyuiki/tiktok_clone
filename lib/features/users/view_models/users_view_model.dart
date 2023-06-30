@@ -26,7 +26,8 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     return UserProfileModel.empty();
   }
 
-  Future<void> createProfile(UserCredential credential) async {
+  Future<void> createProfile(
+      UserCredential credential, Map<dynamic, dynamic> form) async {
     if (credential.user == null) {
       throw Exception("Account not create");
     }
@@ -36,8 +37,8 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     final profile = UserProfileModel(
       uid: credential.user!.uid,
       email: credential.user!.email ?? "anon@anon.com",
-      name: credential.user!.displayName ?? "Anon",
-      bio: "undefined",
+      name: form["username"] ?? "Anon",
+      bio: form["bio"] ?? "undefined",
       link: "undefined",
     );
 

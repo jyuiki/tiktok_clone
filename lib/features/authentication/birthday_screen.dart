@@ -19,6 +19,8 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
 
   DateTime initialDate = DateTime.now();
 
+  String textDate = "";
+
   late final DateTime datePickerMaximumDate =
       initialDate.copyWith(year: initialDate.year - 12);
 
@@ -36,11 +38,13 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
 
   void _onNextTap() {
     logger.d(ref.read(signUpForm));
+    final state = ref.read(signUpForm.notifier).state;
+    ref.read(signUpForm.notifier).state = {...state, "bio": textDate};
     ref.read(signUpProvider.notifier).signUp(context);
   }
 
   void _setTextFieldDate(DateTime date) {
-    final textDate = date.toString().split(" ").first;
+    textDate = date.toString().split(" ").first;
     _birthdayController.value = TextEditingValue(text: textDate);
   }
 
