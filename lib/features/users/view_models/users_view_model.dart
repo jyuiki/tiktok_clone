@@ -41,6 +41,7 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
       name: form["username"] ?? "Anon",
       bio: form["bio"] ?? "undefined",
       link: "undefined",
+      introduction: "undefined",
     );
 
     await _usersRepository.createProfile(profile);
@@ -51,6 +52,21 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     if (state.value == null) return;
     state = AsyncValue.data(state.value!.copyWith(hasAvatar: true));
     await _usersRepository.updateUser(state.value!.uid, {"hasAvatar": true});
+  }
+
+  Future<bool> onEditUserProfile(Map<String, String> profileMap) async {
+    if (state.value == null) return false;
+
+    state = AsyncValue.data(
+      state.value!.copyWith(
+        introduction: profileMap["introduction"] ?? "undefined",
+        link: profileMap["link"] ?? "undefined",
+      ),
+    );
+
+    await _usersRepository.updateUser(state.value!.uid, profileMap);
+
+    return true;
   }
 }
 

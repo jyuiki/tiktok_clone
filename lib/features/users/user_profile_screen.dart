@@ -7,6 +7,7 @@ import 'package:tiktok_clone/constants/breakpoints.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/settings/settings_screen.dart';
+import 'package:tiktok_clone/features/users/user_edit_profile_screen.dart';
 import 'package:tiktok_clone/features/users/widget/avatar.dart';
 import 'package:tiktok_clone/features/users/widget/persistent_tab_bar.dart';
 
@@ -35,6 +36,18 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     );
   }
 
+  void _onEditPressed() {
+    // ref.read(userProvider.notifier).onEditUserProfile(
+    //     {"introduction": DateTime.now().millisecond.toString()});
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const UserEditProfileScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -56,7 +69,15 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     return [
                       SliverAppBar(
                         title: Text(data.name),
+                        centerTitle: true,
                         actions: [
+                          IconButton(
+                            onPressed: _onEditPressed,
+                            icon: const FaIcon(
+                              FontAwesomeIcons.penToSquare,
+                              size: Sizes.size20,
+                            ),
+                          ),
                           IconButton(
                             onPressed: _onGearPressed,
                             icon: const FaIcon(
@@ -205,27 +226,28 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                               ),
                             ),
                             Gaps.v14,
-                            const Padding(
-                              padding: EdgeInsets.symmetric(
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: Sizes.size32,
                               ),
                               child: Text(
-                                "All highlights and where to watch live matches on FIFA+",
+                                // "All highlights and where to watch live matches on FIFA+",
+                                data.introduction,
                                 textAlign: TextAlign.center,
                               ),
                             ),
                             Gaps.v14,
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                FaIcon(
+                                const FaIcon(
                                   FontAwesomeIcons.link,
                                   size: Sizes.size12,
                                 ),
                                 Gaps.h4,
                                 Text(
-                                  "https://www.fifa.com/fifaplus/en/home",
-                                  style: TextStyle(
+                                  data.link,
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),

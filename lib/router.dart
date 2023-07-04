@@ -9,6 +9,7 @@ import 'package:tiktok_clone/features/inbox/activity_screen.dart';
 import 'package:tiktok_clone/features/inbox/chat_detail_screen.dart';
 import 'package:tiktok_clone/features/inbox/chats_screen.dart';
 import 'package:tiktok_clone/features/onbording/interests_screen.dart';
+import 'package:tiktok_clone/features/users/user_edit_profile_screen.dart';
 import 'package:tiktok_clone/features/videos/video_recoeding_screen.dart';
 
 final routerProvider = Provider((ref) {
@@ -96,6 +97,11 @@ final routerProvider = Provider((ref) {
             );
           },
         ),
+      ),
+      GoRoute(
+        path: UserEditProfileScreen.routeURL,
+        name: UserEditProfileScreen.routeName,
+        builder: (context, state) => const UserEditProfileScreen(),
       ),
     ],
   );
