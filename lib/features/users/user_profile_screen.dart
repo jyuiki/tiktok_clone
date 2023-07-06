@@ -10,7 +10,6 @@ import 'package:tiktok_clone/features/settings/settings_screen.dart';
 import 'package:tiktok_clone/features/users/user_edit_profile_screen.dart';
 import 'package:tiktok_clone/features/users/widget/avatar.dart';
 import 'package:tiktok_clone/features/users/widget/persistent_tab_bar.dart';
-import 'package:tiktok_clone/main.dart';
 
 import 'view_models/users_view_model.dart';
 
@@ -51,8 +50,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    logger.i("build");
-
     // final width = MediaQuery.of(context).size.width;
     return ref.watch(userProvider).when(
           error: (error, stackTrace) => Center(

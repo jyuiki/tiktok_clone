@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/features/videos/view_models/timeline_view_model.dart';
 import 'package:tiktok_clone/features/videos/views/widgets/video_post.dart';
+import 'package:tiktok_clone/main.dart';
 
 class VideoTimelineScreen extends ConsumerStatefulWidget {
   const VideoTimelineScreen({super.key});
@@ -19,6 +20,7 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   final _scrollCurve = Curves.linear;
 
   void _onPageChanged(int page) {
+    logger.i("_onPageChanged // page = $page // itemCount = $_itemCount");
     _pageController.animateToPage(
       page,
       duration: _scrollDuration,
@@ -45,13 +47,13 @@ class VideoTimelineScreenState extends ConsumerState<VideoTimelineScreen> {
   }
 
   Future<void> _onRefresh() {
-    return Future.delayed(
-      const Duration(seconds: 5),
-    );
+    return ref.watch(timelineProvider.notifier).refresh();
   }
 
   @override
   Widget build(BuildContext context) {
+    logger.i("build");
+
     return ref.watch(timelineProvider).when(
           loading: () => const Center(
             child: CircularProgressIndicator(),
