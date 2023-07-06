@@ -10,6 +10,7 @@ import 'package:tiktok_clone/features/settings/settings_screen.dart';
 import 'package:tiktok_clone/features/users/user_edit_profile_screen.dart';
 import 'package:tiktok_clone/features/users/widget/avatar.dart';
 import 'package:tiktok_clone/features/users/widget/persistent_tab_bar.dart';
+import 'package:tiktok_clone/main.dart';
 
 import 'view_models/users_view_model.dart';
 
@@ -50,7 +51,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    logger.i("build");
+
+    // final width = MediaQuery.of(context).size.width;
     return ref.watch(userProvider).when(
           error: (error, stackTrace) => Center(
             child: Text(error.toString()),
@@ -59,6 +62,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
             child: CircularProgressIndicator.adaptive(),
           ),
           data: (data) => Scaffold(
+            resizeToAvoidBottomInset: false,
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
             body: SafeArea(
               child: DefaultTabController(
@@ -271,8 +275,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                             ScrollViewKeyboardDismissBehavior.onDrag,
                         itemCount: 20,
                         padding: EdgeInsets.zero,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: width > Breakpoints.lg ? 5 : 3,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, //width > Breakpoints.lg ? 5 : 3,
                           crossAxisSpacing: Sizes.size2,
                           mainAxisSpacing: Sizes.size2,
                           childAspectRatio: 9 / 14,
