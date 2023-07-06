@@ -11,14 +11,14 @@ class VideosRepository {
 
   UploadTask uploadVideoFile(File video, String uid) {
     final fileRef = _storage.ref().child(
-          "/video/$uid/${DateTime.now().millisecondsSinceEpoch.toString()}",
+          "/videos/$uid/${DateTime.now().millisecondsSinceEpoch.toString()}",
         );
 
     return fileRef.putFile(video);
   }
 
   Future<void> saveVideo(VideoModel data) async {
-    await _db.collection("video").add(data.toJson());
+    await _db.collection("videos").add(data.toJson());
   }
 }
 
