@@ -63,8 +63,20 @@ class VideoPostState extends ConsumerState<VideoPost>
     }
   }
 
+  late bool _isLiked;
+  late int _likesCount;
+
   void _onLikeTap() {
-    ref.read(videoPostProvider(widget.videoData.id).notifier).likeVideo();
+    ref.read(videoPostProvider(widget.videoData.id).notifier).toggleLikeVideo();
+    _isLiked = !_isLiked;
+
+    if (_isLiked) {
+      _likesCount += 1;
+    } else {
+      _likesCount -= 1;
+    }
+
+    setState(() {});
   }
 
   void _initVideoPlayer() async {
@@ -84,6 +96,9 @@ class VideoPostState extends ConsumerState<VideoPost>
   @override
   void initState() {
     super.initState();
+
+    _likesCount = widget.videoData.likes;
+    _isLiked = ref.read(videoPostProvider(widget.videoData.id)).value ?? false;
 
     _initVideoPlayer();
 
@@ -333,12 +348,34 @@ class VideoPostState extends ConsumerState<VideoPost>
                   child: Text(widget.videoData.creator),
                 ),
                 Gaps.v24,
-                GestureDetector(
-                  onTap: _onLikeTap,
-                  child: VideoButton(
-                    icon: FontAwesomeIcons.solidHeart,
-                    text: S.of(context).likeCount(widget.videoData.likes),
-                  ),
+                // GestureDetector(
+                //   onTap: _onLikeTap,
+                //   child: Column(
+                //     children: [
+                //       FaIcon(
+                //         FontAwesomeIcons.solidHeart,
+                //         color: _isLiked ? Colors.pink : Colors.white,
+                //         size: Sizes.size40,
+                //       ),
+                //       Gaps.v5,
+                //       Text(
+                //         S.of(context).likeCount(_likesCount),
+                //         style: const TextStyle(
+                //           color: Colors.white,
+                //           fontWeight: FontWeight.bold,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                //   //   VideoButton(
+                //   //     icon: FontAwesomeIcons.solidHeart,
+                //   //     text: S.of(context).likeCount(widget.videoData.likes),
+                //   //   ),
+                // ),
+                VideoLikesButton(
+                  likesCount: _likesCount,
+                  videoId: widget.videoData.id,
+                  onLikesTap: _onLikeTap,
                 ),
                 Gaps.v24,
                 GestureDetector(
@@ -359,5 +396,42 @@ class VideoPostState extends ConsumerState<VideoPost>
         ],
       ),
     );
+  }
+}
+
+class VideoLikesButton extends ConsumerWidget {
+  final String videoId;
+  final int likesCount;
+  final VoidCallback onLikesTap;
+
+  const VideoLikesButton({
+    super.key,
+    required this.videoId,
+    required this.likesCount,
+    required this.onLikesTap,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(videoPostProvider(videoId)).when(
+          data: (data) {
+            return GestureDetector(
+              onTap: onLikesTap,
+              child: VideoButton(
+                icon: FontAwesomeIcons.solidHeart,
+                text: S.of(context).likeCount(likesCount),
+                iconColor: data ? Colors.pink : Colors.white,
+              ),
+            );
+          },
+          error: (error, stackTrace) => Container(),
+          loading: () => GestureDetector(
+            onTap: () {},
+            child: const VideoButton(
+              icon: FontAwesomeIcons.solidHeart,
+              text: "",
+            ),
+          ),
+        );
   }
 }

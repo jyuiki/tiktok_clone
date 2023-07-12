@@ -58,6 +58,7 @@ export const onLikedCreated = functions.firestore
         await db.collection("users").doc(userId).collection("likes").doc(videoId)
         .set({
             videoId : videoId,
+            createdAt : new Date().getTime(),
         });
     });
 

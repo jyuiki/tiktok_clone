@@ -49,6 +49,17 @@ class VideosRepository {
       await query.delete();
     }
   }
+
+  Future<Map<String, dynamic>?> getLikesVideosByUserId(
+      String uid, String videoId) async {
+    final doc = await _db
+        .collection("users")
+        .doc(uid)
+        .collection("likes")
+        .doc(videoId)
+        .get();
+    return doc.data();
+  }
 }
 
 final videosRepo = Provider((ref) => VideosRepository());
