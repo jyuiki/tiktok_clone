@@ -227,7 +227,7 @@ class VideoPostState extends ConsumerState<VideoPost>
                     );
                   },
                   child: AnimatedOpacity(
-                    opacity: _isPaused ? 1 : 0,
+                    opacity: !_isPaused ? 1 : 0,
                     duration: _animationDuration,
                     child: const FaIcon(
                       FontAwesomeIcons.play,
