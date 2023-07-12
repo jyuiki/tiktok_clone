@@ -11,7 +11,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/videos/video_preview_screen.dart';
-import 'package:tiktok_clone/main.dart';
 
 class VideoRecordingScreen extends StatefulWidget {
   const VideoRecordingScreen({super.key});
@@ -88,7 +87,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     await _cameraController.prepareForVideoRecording();
 
     _cameraMaxZoomLevel = await _cameraController.getMaxZoomLevel();
-    logger.d("maxZoomLevel = $_cameraMaxZoomLevel");
 
     _flashMode = _cameraController.value.flashMode;
 
@@ -249,7 +247,6 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen>
     }
 
     if (dragY <= _verticalDragMaxHeight) {
-      logger.d("zoomLevel = $zoomLevel");
       await _cameraController.setZoomLevel(zoomLevel);
       setState(() {
         _zoomLevel = zoomLevel;

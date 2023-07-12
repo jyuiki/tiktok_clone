@@ -5,7 +5,6 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/view_models/signup_view_model.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
-import 'package:tiktok_clone/main.dart';
 
 class BirthdayScreen extends ConsumerStatefulWidget {
   const BirthdayScreen({super.key});
@@ -37,7 +36,6 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
   }
 
   void _onNextTap() {
-    logger.d(ref.read(signUpForm));
     final state = ref.read(signUpForm.notifier).state;
     ref.read(signUpForm.notifier).state = {...state, "bio": textDate};
     ref.read(signUpProvider.notifier).signUp(context);

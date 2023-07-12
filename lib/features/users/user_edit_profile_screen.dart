@@ -4,7 +4,6 @@ import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentication/widgets/form_button.dart';
 import 'package:tiktok_clone/features/users/view_models/users_view_model.dart';
-import 'package:tiktok_clone/main.dart';
 
 class UserEditProfileScreen extends ConsumerStatefulWidget {
   static const String routeName = "editProfile";
@@ -38,9 +37,6 @@ class _UserEditProfileScreenState extends ConsumerState<UserEditProfileScreen> {
         if (_formData["link"]?.isNotEmpty ?? false) {
           link = _formData["link"]!;
         }
-
-        logger.d("introduction = $introduction");
-        logger.d("link = $link");
 
         bool isSubmit =
             await ref.read(userProvider.notifier).onEditUserProfile({
